@@ -2,7 +2,7 @@ modules = ["web", "python-3.11", "nodejs-20", "bash"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["freetype", "glibcLocales", "openssl", "postgresql", "python311Packages.flask", "python311Packages.flask-sqlalchemy", "python311Packages.flask-login", "python311Packages.psycopg2", "python311Packages.sqlalchemy", "python311Packages.werkzeug", "python311Packages.gunicorn", "python311Packages.reportlab", "python311Packages.requests"]
+packages = ["freetype", "glibcLocales", "openssl", "postgresql", "python311Packages.flask", "python311Packages.flask-sqlalchemy", "python311Packages.flask-login", "python311Packages.psycopg2", "python311Packages.sqlalchemy", "python311Packages.werkzeug", "python311Packages.gunicorn", "python311Packages.reportlab", "python311Packages.requests", "python311Packages.email-validator"]
 
 [deployment]
 deploymentTarget = "autoscale"
