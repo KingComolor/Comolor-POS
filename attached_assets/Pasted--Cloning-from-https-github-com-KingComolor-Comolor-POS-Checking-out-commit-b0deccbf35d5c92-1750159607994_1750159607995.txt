@@ -1,0 +1,171 @@
+==> Cloning from https://github.com/KingComolor/Comolor-POS
+==> Checking out commit b0deccbf35d5c9231369496ad943d5e2e53b4e1c in branch master
+==> Using Python version 3.13.4 (default)
+==> Docs on specifying a Python version: https://render.com/docs/python-version
+==> Using Poetry version 2.1.3 (default)
+==> Docs on specifying a Poetry version: https://render.com/docs/poetry-version
+==> Installing UV version 0.7.12...
+==> Using UV version 0.7.12 (default)
+==> Docs on specifying a UV version: [https://render.com/docs/uv-version](https://render.com/docs/uv-version)
+==> Running build command 'pip install -r requirements.txt'...
+Collecting email-validator==2.1.1 (from -r requirements.txt (line 1))
+  Downloading email_validator-2.1.1-py3-none-any.whl.metadata (26 kB)
+Collecting flask==3.1.1 (from -r requirements.txt (line 2))
+  Downloading flask-3.1.1-py3-none-any.whl.metadata (3.0 kB)
+Collecting flask-login==0.6.3 (from -r requirements.txt (line 3))
+  Downloading Flask_Login-0.6.3-py3-none-any.whl.metadata (5.8 kB)
+Collecting flask-sqlalchemy==3.1.1 (from -r requirements.txt (line 4))
+  Downloading flask_sqlalchemy-3.1.1-py3-none-any.whl.metadata (3.4 kB)
+Collecting gunicorn==23.0.0 (from -r requirements.txt (line 5))
+  Downloading gunicorn-23.0.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 6))
+  Downloading psycopg2-binary-2.9.9.tar.gz (384 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting reportlab==4.2.2 (from -r requirements.txt (line 7))
+  Downloading reportlab-4.2.2-py3-none-any.whl.metadata (1.4 kB)
+Collecting requests==2.31.0 (from -r requirements.txt (line 8))
+  Downloading requests-2.31.0-py3-none-any.whl.metadata (4.6 kB)
+Collecting sqlalchemy==2.0.36 (from -r requirements.txt (line 9))
+  Downloading SQLAlchemy-2.0.36-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.7 kB)
+Collecting werkzeug==3.1.1 (from -r requirements.txt (line 10))
+  Downloading werkzeug-3.1.1-py3-none-any.whl.metadata (3.7 kB)
+Collecting dnspython>=2.0.0 (from email-validator==2.1.1->-r requirements.txt (line 1))
+  Downloading dnspython-2.7.0-py3-none-any.whl.metadata (5.8 kB)
+Collecting idna>=2.0.0 (from email-validator==2.1.1->-r requirements.txt (line 1))
+  Downloading idna-3.10-py3-none-any.whl.metadata (10 kB)
+Collecting blinker>=1.9.0 (from flask==3.1.1->-r requirements.txt (line 2))
+  Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting click>=8.1.3 (from flask==3.1.1->-r requirements.txt (line 2))
+  Downloading click-8.2.1-py3-none-any.whl.metadata (2.5 kB)
+Collecting itsdangerous>=2.2.0 (from flask==3.1.1->-r requirements.txt (line 2))
+  Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting jinja2>=3.1.2 (from flask==3.1.1->-r requirements.txt (line 2))
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting markupsafe>=2.1.1 (from flask==3.1.1->-r requirements.txt (line 2))
+  Downloading MarkupSafe-3.0.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.0 kB)
+Collecting packaging (from gunicorn==23.0.0->-r requirements.txt (line 5))
+  Downloading packaging-25.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting pillow>=9.0.0 (from reportlab==4.2.2->-r requirements.txt (line 7))
+  Downloading pillow-11.2.1-cp313-cp313-manylinux_2_28_x86_64.whl.metadata (8.9 kB)
+Collecting chardet (from reportlab==4.2.2->-r requirements.txt (line 7))
+  Downloading chardet-5.2.0-py3-none-any.whl.metadata (3.4 kB)
+Collecting charset-normalizer<4,>=2 (from requests==2.31.0->-r requirements.txt (line 8))
+  Downloading charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (35 kB)
+Collecting urllib3<3,>=1.21.1 (from requests==2.31.0->-r requirements.txt (line 8))
+  Downloading urllib3-2.4.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting certifi>=2017.4.17 (from requests==2.31.0->-r requirements.txt (line 8))
+  Downloading certifi-2025.6.15-py3-none-any.whl.metadata (2.4 kB)
+Collecting typing-extensions>=4.6.0 (from sqlalchemy==2.0.36->-r requirements.txt (line 9))
+  Downloading typing_extensions-4.14.0-py3-none-any.whl.metadata (3.0 kB)
+Downloading email_validator-2.1.1-py3-none-any.whl (30 kB)
+Downloading flask-3.1.1-py3-none-any.whl (103 kB)
+Downloading Flask_Login-0.6.3-py3-none-any.whl (17 kB)
+Downloading flask_sqlalchemy-3.1.1-py3-none-any.whl (25 kB)
+Downloading gunicorn-23.0.0-py3-none-any.whl (85 kB)
+Downloading reportlab-4.2.2-py3-none-any.whl (1.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 67.9 MB/s eta 0:00:00
+Downloading requests-2.31.0-py3-none-any.whl (62 kB)
+Downloading SQLAlchemy-2.0.36-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 141.7 MB/s eta 0:00:00
+Downloading werkzeug-3.1.1-py3-none-any.whl (224 kB)
+Downloading charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (148 kB)
+Downloading idna-3.10-py3-none-any.whl (70 kB)
+Downloading urllib3-2.4.0-py3-none-any.whl (128 kB)
+Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Downloading certifi-2025.6.15-py3-none-any.whl (157 kB)
+Downloading click-8.2.1-py3-none-any.whl (102 kB)
+Downloading dnspython-2.7.0-py3-none-any.whl (313 kB)
+Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading MarkupSafe-3.0.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (23 kB)
+Downloading pillow-11.2.1-cp313-cp313-manylinux_2_28_x86_64.whl (4.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.6/4.6 MB 148.8 MB/s eta 0:00:00
+Downloading typing_extensions-4.14.0-py3-none-any.whl (43 kB)
+Downloading chardet-5.2.0-py3-none-any.whl (199 kB)
+Downloading packaging-25.0-py3-none-any.whl (66 kB)
+Building wheels for collected packages: psycopg2-binary
+  Building wheel for psycopg2-binary (pyproject.toml): started
+  Building wheel for psycopg2-binary (pyproject.toml): finished with status 'done'
+  Created wheel for psycopg2-binary: filename=psycopg2_binary-2.9.9-cp313-cp313-linux_x86_64.whl size=521316 sha256=c2388e6b556cfcdec4a51212a7390672cb210959d0436be3924772163d153850
+  Stored in directory: /opt/render/.cache/wheels/03/34/cf/71a53a0a7ee50c85943f826ea7225cb94fde84b15f8be3da89
+Successfully built psycopg2-binary
+Installing collected packages: urllib3, typing-extensions, psycopg2-binary, pillow, packaging, markupsafe, itsdangerous, idna, dnspython, click, charset-normalizer, chardet, certifi, blinker, werkzeug, sqlalchemy, requests, reportlab, jinja2, gunicorn, email-validator, flask, flask-sqlalchemy, flask-login
+Successfully installed blinker-1.9.0 certifi-2025.6.15 chardet-5.2.0 charset-normalizer-3.4.2 click-8.2.1 dnspython-2.7.0 email-validator-2.1.1 flask-3.1.1 flask-login-0.6.3 flask-sqlalchemy-3.1.1 gunicorn-23.0.0 idna-3.10 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.2 packaging-25.0 pillow-11.2.1 psycopg2-binary-2.9.9 reportlab-4.2.2 requests-2.31.0 sqlalchemy-2.0.36 typing-extensions-4.14.0 urllib3-2.4.0 werkzeug-3.1.1
+==> Uploading build...
+==> Uploaded in 4.5s. Compression took 1.4s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --max-requests 1000 --max-requests-jitter 100 main:app'
+Traceback (most recent call last):
+  File "/opt/render/project/src/.venv/bin/gunicorn", line 8, in <module>
+    sys.exit(run())
+             ~~~^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 66, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]", prog=prog).run()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 235, in run
+    super().run()
+    ~~~~~~~~~~~^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 71, in run
+    Arbiter(self).run()
+    ~~~~~~~^^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/arbiter.py", line 57, in __init__
+    self.setup(app)
+    ~~~~~~~~~~^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/arbiter.py", line 117, in setup
+    self.app.wsgi()
+    ~~~~~~~~~~~~~^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 66, in wsgi
+    self.callable = self.load()
+                    ~~~~~~~~~^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 57, in load
+    return self.load_wsgiapp()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 47, in load_wsgiapp
+    return util.import_app(self.app_uri)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/util.py", line 370, in import_app
+    mod = importlib.import_module(module)
+  File "/usr/local/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/render/project/src/main.py", line 1, in <module>
+    from app import app  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^
+  File "/opt/render/project/src/app.py", line 39, in <module>
+    db.init_app(app)
+    ~~~~~~~~~~~^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask_sqlalchemy/extension.py", line 374, in init_app
+    engines[key] = self._make_engine(key, options, app)
+                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask_sqlalchemy/extension.py", line 665, in _make_engine
+    return sa.engine_from_config(options, prefix="")
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/sqlalchemy/engine/create.py", line 820, in engine_from_config
+    return create_engine(url, **options)
+  File "<string>", line 2, in create_engine
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/sqlalchemy/util/deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/sqlalchemy/engine/create.py", line 599, in create_engine
+    dbapi = dbapi_meth(**dbapi_args)
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 690, in import_dbapi
+    import psycopg2
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/psycopg2/__init__.py", line 51, in <module>
+    from psycopg2._psycopg import (                     # noqa
+    ...<10 lines>...
+    )
+ImportError: /opt/render/project/src/.venv/lib/python3.13/site-packages/psycopg2/_psycopg.cpython-313-x86_64-linux-gnu.so: undefined symbol: _PyInterpreterState_Get
+==> Exited with status 1
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+==> Running 'gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --max-requests 1000 --max-requests-jitter 100 main:app'
