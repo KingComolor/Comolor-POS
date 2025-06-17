@@ -3,7 +3,6 @@ name = "comolor-pos"
 version = "0.1.0"
 description = "Multi-tenant POS system for Kenyan supermarkets"
 authors = ["Comolor <comolor07@gmail.com>"]
-package = false
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4"
