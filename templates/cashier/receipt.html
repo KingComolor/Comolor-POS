@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Receipt #{{ sale.receipt_number }} - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Receipt #{{ sale.receipt_number }}</h5>
+                    <div>
+                        <button class="btn btn-primary btn-sm" onclick="printReceipt()">
+                            <i data-feather="printer"></i> Print
+                        </button>
+                        <button onclick="goBackToPOS()" class="btn btn-secondary btn-sm">
+                            <i data-feather="arrow-left"></i> Back to POS
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body" id="receiptContent">
+                    <!-- Receipt Header -->
+                    <div class="text-center mb-4">
+                        <h3>{{ shop.name }}</h3>
+                        <p class="mb-1">{{ shop.address }}</p>
+                        <p class="mb-1">Phone: {{ shop.phone }}</p>
+                        <p class="mb-1">Email: {{ shop.email }}</p>
+                        <hr>
+                        {% if shop.settings.get('receipt_header') %}
+                            <p class="text-muted">{{ shop.settings.get('receipt_header') }}</p>
+                            <hr>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Sale Details -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <strong>Receipt #:</strong> {{ sale.receipt_number }}
+                        </div>
+                        <div class="col-6 text-end">
+                            <strong>Date:</strong> {{ sale.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <strong>Cashier:</strong> {{ sale.cashier_user.username }}
+                        </div>
+                        <div class="col-6 text-end">
+                            <strong>Payment:</strong> 
+                            {% if sale.payment_method == 'mpesa' %}
+                                MPesa
+                            {% else %}
+                                Cash
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if sale.customer_name %}
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <strong>Customer:</strong> {{ sale.customer_name }}
+                            {% if sale.customer_phone %}
+                                ({{ sale.customer_phone }})
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if sale.mpesa_receipt %}
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <strong>MPesa Code:</strong> {{ sale.mpesa_receipt }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <!-- Items -->
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-end">Price</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in sale.items %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-end">{{ "{:,.2f}".format(item.unit_price) }}</td>
+                                <td class="text-end">{{ "{:,.2f}".format(item.line_total) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    <hr>
+                    
+                    <!-- Totals -->
+                    <div class="row">
+                        <div class="col-8">
+                            <strong>Subtotal:</strong>
+                        </div>
+                        <div class="col-4 text-end">
+                            KES {{ "{:,.2f}".format(sale.subtotal) }}
+                        </div>
+                    </div>
+                    
+                    {% if sale.discount_amount > 0 %}
+                    <div class="row">
+                        <div class="col-8">
+                            <strong>Discount:</strong>
+                        </div>
+                        <div class="col-4 text-end">
+                            -KES {{ "{:,.2f}".format(sale.discount_amount) }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-8">
+                            <strong>Tax:</strong>
+                        </div>
+                        <div class="col-4 text-end">
+                            KES {{ "{:,.2f}".format(sale.tax_amount) }}
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-8">
+                            <h5><strong>TOTAL:</strong></h5>
+                        </div>
+                        <div class="col-4 text-end">
+                            <h5><strong>KES {{ "{:,.2f}".format(sale.total_amount) }}</strong></h5>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Footer -->
+                    <div class="text-center mt-4">
+                        {% if shop.settings.get('receipt_footer') %}
+                            <p class="text-muted">{{ shop.settings.get('receipt_footer') }}</p>
+                        {% endif %}
+                        <p class="text-muted">
+                            <small>Powered by Comolor POS</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function printReceipt() {
+        // Show receipt content in alert
+        const receiptContent = document.getElementById('receiptContent');
+        const content = receiptContent.innerText.substring(0, 800);
+        window.alert('Receipt Print Preview:\n\n' + content + (content.length >= 800 ? '\n\n[Content truncated...]' : ''));
+    }
+    
+    function goBackToPOS() {
+        window.alert('Navigate back to POS Terminal to continue processing sales.');
+    }
+</script>
+{% endblock %}

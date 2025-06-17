@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Cashier - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">Edit Cashier</h1>
+                <a href="{{ url_for('shop_admin.cashiers') }}" class="btn btn-secondary">
+                    <i data-feather="arrow-left"></i> Back to Cashiers
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" data-validate>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="username" name="username" 
+                                       value="{{ cashier.username }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="{{ cashier.email }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Leave blank to keep current password">
+                                <div class="form-text">Only enter a password if you want to change it</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="user_active" name="user_active"
+                                           {{ 'checked' if cashier.user_active }}>
+                                    <label class="form-check-label" for="user_active">
+                                        Active Account
+                                    </label>
+                                    <div class="form-text">Uncheck to disable this cashier's access</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('shop_admin.cashiers') }}" class="btn btn-secondary">
+                                <i data-feather="x"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save"></i> Update Cashier
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Cashier Information -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Cashier Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Created:</strong> {{ cashier.created_at.strftime('%Y-%m-%d %H:%M') if cashier.created_at else 'Unknown' }}</p>
+                            <p><strong>Last Login:</strong> {{ cashier.last_login.strftime('%Y-%m-%d %H:%M') if cashier.last_login else 'Never' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong> 
+                                <span class="badge bg-{{ 'success' if cashier.user_active else 'danger' }}">
+                                    {{ 'Active' if cashier.user_active else 'Inactive' }}
+                                </span>
+                            </p>
+                            <p><strong>Role:</strong> <span class="badge bg-info">{{ cashier.role.title() }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/standard-navigation.js') }}"></script>
+{% endblock %}

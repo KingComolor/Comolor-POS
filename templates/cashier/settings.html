@@ -1,0 +1,562 @@
+{% extends "base.html" %}
+
+{% block title %}Cashier Settings - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="settings"></i> Cashier Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <!-- Personal Information -->
+                        <h6 class="text-primary mb-3">Personal Information</h6>
+                        
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" value="{{ session.username }}" readonly>
+                            <small class="form-text text-muted">Contact your administrator to change username.</small>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Device & Hardware Settings -->
+                        <h6 class="text-primary mb-3">🖨️ Receipt Printer Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="defaultPrinter" class="form-label">Default Receipt Printer</label>
+                                <select class="form-select" id="defaultPrinter" name="default_printer">
+                                    <option value="">Select Printer</option>
+                                    <option value="epson_tm">Epson TM Series</option>
+                                    <option value="xprinter">Xprinter 80mm</option>
+                                    <option value="generic_thermal">Generic Thermal Printer</option>
+                                    <option value="system_default">System Default Printer</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="receiptWidth" class="form-label">Receipt Width</label>
+                                <select class="form-select" id="receiptWidth" name="receipt_width">
+                                    <option value="58mm">58mm</option>
+                                    <option value="80mm" selected>80mm</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="autoReceipt" name="auto_receipt">
+                                    <label class="form-check-label" for="autoReceipt">
+                                        📄 Auto-print After Sale
+                                    </label>
+                                    <small class="form-text text-muted d-block">Automatically print receipt after payment</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button type="button" class="btn btn-outline-info" onclick="testPrinter()">
+                                    🖨️ Print Test Page
+                                </button>
+                                <small class="form-text text-muted d-block">Test the connected receipt printer</small>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Screen & Display Settings -->
+                        <h6 class="text-primary mb-3">🖥️ Screen & Display Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="screenMode" class="form-label">Screen Mode</label>
+                                <select class="form-select" id="screenMode" name="screen_mode">
+                                    <option value="windowed">Windowed</option>
+                                    <option value="fullscreen">Fullscreen</option>
+                                    <option value="auto_resize">Auto-resize</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="theme" class="form-label">Theme</label>
+                                <select class="form-select" id="theme" name="theme">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="touchscreenMode" name="touchscreen_mode">
+                                    <label class="form-check-label" for="touchscreenMode">
+                                        📱 Touchscreen Support
+                                    </label>
+                                    <small class="form-text text-muted d-block">Optimize for touchscreen devices</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-select" id="language" name="language">
+                                    <option value="en">English</option>
+                                    <option value="sw">Swahili</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Security & Timeout Settings -->
+                        <h6 class="text-primary mb-3">🔒 Security & Timeout Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="autoLogoutTime" class="form-label">Auto Logout Timeout</label>
+                                <select class="form-select" id="autoLogoutTime" name="auto_logout_time">
+                                    <option value="0">Never</option>
+                                    <option value="300" selected>5 minutes</option>
+                                    <option value="600">10 minutes</option>
+                                    <option value="900">15 minutes</option>
+                                    <option value="1800">30 minutes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="autoLockPOS" name="auto_lock_pos" checked>
+                                    <label class="form-check-label" for="autoLockPOS">
+                                        🔒 Auto Lock After Sale
+                                    </label>
+                                    <small class="form-text text-muted d-block">Automatically lock POS after each sale</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Audio & Sound Settings -->
+                        <h6 class="text-primary mb-3">🔊 Audio & Sound Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enableBeepOnScan" name="enable_beep_on_scan" checked>
+                                    <label class="form-check-label" for="enableBeepOnScan">
+                                        🔊 Enable Beep on Scan
+                                    </label>
+                                    <small class="form-text text-muted d-block">Helpful in noisy environments</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="paymentSounds" name="payment_sounds" checked>
+                                    <label class="form-check-label" for="paymentSounds">
+                                        🔊 Payment Confirmation Sound
+                                    </label>
+                                    <small class="form-text text-muted d-block">Sound on successful payment</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="errorSounds" name="error_sounds" checked>
+                                    <label class="form-check-label" for="errorSounds">
+                                        🔊 Error Alert Sounds
+                                    </label>
+                                    <small class="form-text text-muted d-block">Audio alerts for errors and warnings</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="soundVolume" class="form-label">Sound Volume</label>
+                                <input type="range" class="form-range" id="soundVolume" name="sound_volume" min="0" max="100" value="75">
+                                <small class="form-text text-muted">Adjust system sound volume</small>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Keyboard & Input Settings -->
+                        <h6 class="text-primary mb-3">⌨️ Keyboard & Input Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="keyboardShortcuts" name="keyboard_shortcuts" checked>
+                                    <label class="form-check-label" for="keyboardShortcuts">
+                                        ⌨️ Enable Keyboard Shortcuts
+                                    </label>
+                                    <small class="form-text text-muted d-block">F1=Pay, F2=New Sale, F3=Search, etc.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="autoFocus" name="auto_focus" checked>
+                                    <label class="form-check-label" for="autoFocus">
+                                        🔍 Auto-focus Search
+                                    </label>
+                                    <small class="form-text text-muted d-block">Automatically focus on search field</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="quickAdd" name="quick_add" checked>
+                                    <label class="form-check-label" for="quickAdd">
+                                        ⚡ Quick Add to Cart
+                                    </label>
+                                    <small class="form-text text-muted d-block">Add products with single click</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="defaultPaymentMode" class="form-label">💳 Default Payment Mode</label>
+                                <select class="form-select" id="defaultPaymentMode" name="default_payment_mode">
+                                    <option value="cash">Cash</option>
+                                    <option value="mpesa" selected>MPesa</option>
+                                    <option value="ask">Ask Every Time</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- System & Network Settings -->
+                        <h6 class="text-primary mb-3">📡 System & Network Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="networkMode" class="form-label">Network Mode</label>
+                                <select class="form-select" id="networkMode" name="network_mode">
+                                    <option value="online" selected>Online Mode</option>
+                                    <option value="offline">Offline Mode</option>
+                                    <option value="auto">Auto (Online/Offline)</option>
+                                </select>
+                                <small class="form-text text-muted">For low-connectivity areas</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="timeZone" class="form-label">🕒 Time Zone</label>
+                                <select class="form-select" id="timeZone" name="time_zone">
+                                    <option value="Africa/Nairobi" selected>Africa/Nairobi (EAT)</option>
+                                    <option value="UTC">UTC</option>
+                                    <option value="auto">Auto-detect</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="autoUpdate" name="auto_update">
+                                    <label class="form-check-label" for="autoUpdate">
+                                        🔄 Auto Update Settings
+                                    </label>
+                                    <small class="form-text text-muted d-block">Check for app updates automatically</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button type="button" class="btn btn-outline-info" onclick="checkConnection()">
+                                    📡 Check Internet Connection
+                                </button>
+                                <small class="form-text text-muted d-block">Test server connection</small>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Startup & Behavior Settings -->
+                        <h6 class="text-primary mb-3">🔘 Startup & Behavior Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="startupBehavior" class="form-label">POS Start Behavior</label>
+                                <select class="form-select" id="startupBehavior" name="startup_behavior">
+                                    <option value="dashboard">Show Dashboard</option>
+                                    <option value="new_sale" selected>Open New Sale</option>
+                                    <option value="last_screen">Return to Last Screen</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="showWelcomeScreen" name="show_welcome_screen" checked>
+                                    <label class="form-check-label" for="showWelcomeScreen">
+                                        👋 Show Welcome Screen
+                                    </label>
+                                    <small class="form-text text-muted d-block">Display welcome message on startup</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Barcode Scanner Settings -->
+                        <h6 class="text-primary mb-3">Barcode Scanner Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="scannerPrefix" class="form-label">Scanner Prefix</label>
+                                <input type="text" class="form-control" id="scannerPrefix" name="scanner_prefix" 
+                                       placeholder="Enter prefix characters">
+                                <small class="form-text text-muted">Characters that appear before barcode</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="scannerSuffix" class="form-label">Scanner Suffix</label>
+                                <input type="text" class="form-control" id="scannerSuffix" name="scanner_suffix" 
+                                       placeholder="Enter suffix characters">
+                                <small class="form-text text-muted">Characters that appear after barcode</small>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i data-feather="info"></i>
+                            <strong>Scanner Test:</strong> Click in the field below and scan a barcode to test settings.
+                            <input type="text" class="form-control mt-2" id="scannerTest" placeholder="Scan a barcode here...">
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Quick Actions -->
+                        <h6 class="text-primary mb-3">Quick Actions</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <a href="{{ url_for('auth.change_password') }}" class="btn btn-outline-primary w-100">
+                                    <i data-feather="key"></i> Change Password
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button type="button" class="btn btn-outline-secondary w-100" onclick="testScanner()">
+                                    <i data-feather="camera"></i> Test Scanner
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('cashier.pos') }}" class="btn btn-secondary">
+                                <i data-feather="arrow-left"></i> Back to POS
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save"></i> Save Settings
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/barcode.js') }}"></script>
+<script>
+    // Global variables
+    let logoutTimer = null;
+    
+    function testScanner() {
+        window.alert('Point your barcode scanner at a product and scan. The barcode should appear in the test field above.');
+        document.getElementById('scannerTest').focus();
+    }
+    
+    function testPrinter() {
+        if (window.confirm('This will send a test receipt to your default printer. Continue?')) {
+            fetch('/cashier/test-printer', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.alert('Test page sent to printer successfully!');
+                } else {
+                    window.alert('Printer test failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                window.alert('Failed to test printer: ' + error.message);
+            });
+        }
+    }
+    
+    function checkConnection() {
+        const button = window.event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Testing...';
+        button.disabled = true;
+        
+        fetch('/cashier/check-connection', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.online) {
+                window.alert('✅ Connection successful! Server response time: ' + data.response_time + 'ms');
+            } else {
+                window.alert('❌ Connection failed: ' + data.message);
+            }
+        })
+        .catch(error => {
+            window.alert('❌ Connection test failed: ' + error.message);
+        })
+        .finally(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        });
+    }
+    
+    function showKeyboardShortcuts() {
+        const shortcuts = `Keyboard Shortcuts:
+• F1 - Complete Payment
+• F2 - Start New Sale  
+• F3 - Focus Search Field
+• F4 - Add Product to Cart
+• F5 - Clear Current Cart
+• F6 - Open Calculator
+• F7 - Print Last Receipt
+• F8 - Open Settings
+• F9 - Lock POS
+• F10 - View Reports
+• ESC - Cancel Current Action
+• Enter - Confirm Action
+• Ctrl+S - Save Current State`;
+        window.alert(shortcuts);
+    }
+    
+    // Initialize all settings
+    document.addEventListener('DOMContentLoaded', function() {
+        initBarcodeScanner('scannerTest');
+        loadSettings();
+        setupEventListeners();
+    });
+    
+    function loadSettings() {
+        // Load all saved preferences from localStorage
+        const settings = {
+            theme: localStorage.getItem('cashier_theme') || 'light',
+            language: localStorage.getItem('cashier_language') || 'en',
+            defaultPrinter: localStorage.getItem('cashier_default_printer') || '',
+            receiptWidth: localStorage.getItem('cashier_receipt_width') || '80mm',
+            screenMode: localStorage.getItem('cashier_screen_mode') || 'windowed',
+            autoLogoutTime: localStorage.getItem('cashier_auto_logout_time') || '300',
+            networkMode: localStorage.getItem('cashier_network_mode') || 'online',
+            timeZone: localStorage.getItem('cashier_time_zone') || 'Africa/Nairobi',
+            startupBehavior: localStorage.getItem('cashier_startup_behavior') || 'new_sale',
+            defaultPaymentMode: localStorage.getItem('cashier_default_payment_mode') || 'mpesa',
+            soundVolume: localStorage.getItem('cashier_sound_volume') || '75'
+        };
+        
+        // Apply settings to form
+        Object.keys(settings).forEach(key => {
+            const element = document.getElementById(key);
+            if (element) {
+                if (element.type === 'checkbox') {
+                    element.checked = localStorage.getItem('cashier_' + key) === 'true';
+                } else {
+                    element.value = settings[key];
+                }
+            }
+        });
+        
+        // Apply theme
+        applyTheme(settings.theme);
+    }
+    
+    function setupEventListeners() {
+        // Theme change handler
+        document.getElementById('theme').addEventListener('change', function() {
+            applyTheme(this.value);
+        });
+        
+        // Screen mode handler
+        document.getElementById('screenMode').addEventListener('change', function() {
+            if (this.value === 'fullscreen') {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+            } else if (this.value === 'windowed') {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+            localStorage.setItem('cashier_screen_mode', this.value);
+        });
+        
+        // Auto logout timer setup
+        document.getElementById('autoLogoutTime').addEventListener('change', function() {
+            const timeout = parseInt(this.value);
+            localStorage.setItem('cashier_auto_logout_time', timeout);
+            setupAutoLogout(timeout);
+        });
+        
+        // Save all settings on form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            saveAllSettings();
+        });
+        
+        // Real-time setting saves for immediate feedback
+        const settingsInputs = document.querySelectorAll('input, select');
+        settingsInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const key = 'cashier_' + this.name;
+                const value = this.type === 'checkbox' ? this.checked : this.value;
+                localStorage.setItem(key, value);
+            });
+        });
+    }
+    
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+        localStorage.setItem('cashier_theme', theme);
+    }
+    
+    function setupAutoLogout(timeoutMinutes) {
+        if (logoutTimer) {
+            clearTimeout(logoutTimer);
+        }
+        
+        if (timeoutMinutes > 0) {
+            logoutTimer = setTimeout(() => {
+                if (window.confirm('You have been idle for ' + timeoutMinutes + ' minutes. Do you want to stay logged in?')) {
+                    setupAutoLogout(timeoutMinutes); // Reset timer
+                } else {
+                    window.alert('Session expired. Please close this window and log in again.');
+                }
+            }, timeoutMinutes * 60 * 1000);
+        }
+    }
+    
+    function saveAllSettings() {
+        const formData = new FormData(document.querySelector('form'));
+        const settings = {};
+        
+        for (let [key, value] of formData.entries()) {
+            settings[key] = value;
+            localStorage.setItem('cashier_' + key, value);
+        }
+        
+        // Save checkbox states (unchecked checkboxes don't appear in FormData)
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            localStorage.setItem('cashier_' + checkbox.name, checkbox.checked);
+        });
+        
+        console.log('Settings saved:', settings);
+    }
+    
+    // Initialize auto logout on page load
+    const savedTimeout = localStorage.getItem('cashier_auto_logout_time') || '300';
+    if (savedTimeout !== '0') {
+        setupAutoLogout(parseInt(savedTimeout));
+    }
+</script>
+{% endblock %}

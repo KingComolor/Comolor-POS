@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Pay License - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="credit-card" class="me-2"></i>
+                        License Payment Instructions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="display-4 text-primary mb-3">KES {{ instructions.amount }}</div>
+                        <p class="lead">Monthly License Fee</p>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i data-feather="info" class="me-2"></i>
+                        <strong>Payment Method:</strong> 
+                        {% if instructions.type == 'phone' %}
+                            Send Money to Phone Number
+                        {% else %}
+                            Pay to Till Number
+                        {% endif %}
+                    </div>
+
+                    <!-- Payment Instructions -->
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i data-feather="smartphone" class="me-2"></i>
+                                Step-by-Step Instructions
+                            </h6>
+                            <ol class="mb-0">
+                                {% for instruction in instructions.instructions %}
+                                <li class="mb-2">{{ instruction }}</li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Quick USSD -->
+                    <div class="card border-primary mb-4">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-primary">
+                                <i data-feather="zap" class="me-2"></i>
+                                Quick Payment (USSD)
+                            </h6>
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                <span class="h5 font-monospace mb-0">{{ instructions.ussd }}</span>
+                                <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ instructions.ussd }}')">
+                                    <i data-feather="copy" class="me-1"></i>Copy
+                                </button>
+                            </div>
+                            <small class="text-muted">Dial this code on your phone</small>
+                        </div>
+                    </div>
+
+                    <!-- Payment Details -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">
+                                {% if instructions.type == 'phone' %}Phone Number{% else %}Till Number{% endif %}
+                            </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ instructions.number }}" readonly>
+                                <button class="btn btn-outline-secondary" onclick="copyToClipboard('{{ instructions.number }}')">
+                                    <i data-feather="copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Amount</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="KES {{ instructions.amount }}" readonly>
+                                <button class="btn btn-outline-secondary" onclick="copyToClipboard('{{ instructions.amount }}')">
+                                    <i data-feather="copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Account Name</label>
+                            <input type="text" class="form-control" value="{{ instructions.name }}" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Reference</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ instructions.reference }}" readonly>
+                                <button class="btn btn-outline-secondary" onclick="copyToClipboard('{{ instructions.reference }}')">
+                                    <i data-feather="copy"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted">Use this reference for faster processing</small>
+                        </div>
+                    </div>
+
+                    <!-- Important Notes -->
+                    <div class="alert alert-warning">
+                        <i data-feather="alert-triangle" class="me-2"></i>
+                        <strong>Important Notes:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>Use the exact reference number: <strong>{{ instructions.reference }}</strong></li>
+                            <li>{{ instructions.note }}</li>
+                            <li>Contact support if payment is not processed within 1 hour</li>
+                            <li>Keep your MPesa confirmation message as proof of payment</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="javascript:history.back()" class="btn btn-secondary">
+                            <i data-feather="arrow-left" class="me-2"></i>Back
+                        </a>
+                        <button class="btn btn-primary" onclick="window.alert('Payment instructions displayed. Send payment via MPesa as shown above.')">
+                            <i data-feather="smartphone" class="me-2"></i>Proceed with Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        const btn = event.target.closest('button');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i data-feather="check"></i>';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-outline-secondary', 'btn-outline-primary');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-secondary');
+            feather.replace();
+        }, 1000);
+        
+        feather.replace();
+    });
+}
+</script>
+{% endblock %}

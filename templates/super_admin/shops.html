@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Shops - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i data-feather="store"></i> Manage Shops
+                </h1>
+            </div>
+            
+            <!-- Search and Filters -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="search" class="form-label">Search Shops</label>
+                            <input type="text" class="form-control" id="search" name="search" 
+                                   value="{{ search }}" placeholder="Shop name, owner, or email...">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i data-feather="search"></i> Search
+                                </button>
+                                <a href="{{ url_for('super_admin.shops') }}" class="btn btn-secondary">Clear</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Shops Table -->
+            <div class="card">
+                <div class="card-body">
+                    {% if shops.items %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Shop</th>
+                                        <th>Owner</th>
+                                        <th>Contact</th>
+                                        <th>Till Number</th>
+                                        <th>License Status</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for shop in shops.items %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ shop.name }}</strong><br>
+                                            <small class="text-muted">{{ shop.address[:50] }}...</small>
+                                        </td>
+                                        <td>{{ shop.owner_name }}</td>
+                                        <td>
+                                            {{ shop.email }}<br>
+                                            <small class="text-muted">{{ shop.phone }}</small>
+                                        </td>
+                                        <td>
+                                            <code>{{ shop.till_number }}</code>
+                                        </td>
+                                        <td>
+                                            {% if shop.is_license_active %}
+                                                <span class="badge bg-success">Active</span><br>
+                                                <small class="text-muted">
+                                                    Expires: {{ shop.license_expires.strftime('%Y-%m-%d') }}
+                                                </small>
+                                            {% else %}
+                                                <span class="badge bg-danger">Expired</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if shop.is_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ shop.created_at.strftime('%Y-%m-%d') }}</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ url_for('super_admin.edit_shop', shop_id=shop.id) }}" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i data-feather="edit"></i>
+                                                </a>
+                                                <a href="{{ url_for('super_admin.toggle_shop_status', shop_id=shop.id) }}" 
+                                                   class="btn btn-sm btn-outline-warning"
+                                                   onclick="return window.confirm('Are you sure?')">
+                                                    {% if shop.is_active %}
+                                                        <i data-feather="pause"></i>
+                                                    {% else %}
+                                                        <i data-feather="play"></i>
+                                                    {% endif %}
+                                                </a>
+                                                <a href="{{ url_for('super_admin.login_as_shop_admin', shop_id=shop.id) }}" 
+                                                   class="btn btn-sm btn-outline-info">
+                                                    <i data-feather="log-in"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        {% if shops.pages > 1 %}
+                        <nav aria-label="Shops pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if shops.has_prev %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('super_admin.shops', page=shops.prev_num, search=search) }}">Previous</a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for page_num in shops.iter_pages() %}
+                                    {% if page_num %}
+                                        {% if page_num != shops.page %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('super_admin.shops', page=page_num, search=search) }}">{{ page_num }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ page_num }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if shops.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('super_admin.shops', page=shops.next_num, search=search) }}">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="store" class="display-4 text-muted"></i>
+                            <h4 class="text-muted mt-3">No shops found</h4>
+                            <p class="text-muted">No shops match your search criteria.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

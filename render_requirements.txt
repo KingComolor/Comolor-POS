@@ -1,0 +1,39 @@
+# Comolor POS Production Requirements for Render Deployment
+
+# Core Flask Framework
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+
+# Database
+SQLAlchemy==2.0.23
+psycopg2-binary==2.9.9
+
+# WSGI Server
+gunicorn==21.2.0
+
+# Security & Authentication
+Werkzeug==3.0.1
+email-validator==2.1.0
+
+# External APIs
+requests==2.31.0
+
+# PDF Generation
+reportlab==4.0.7
+
+# Background Tasks & Caching
+redis==5.0.1
+celery==5.3.4
+
+# Monitoring & Logging
+sentry-sdk[flask]==1.38.0
+
+# Environment Management
+python-decouple==3.8
+
+# Date/Time handling
+python-dateutil==2.8.2
+
+# Production optimizations
+gevent==23.9.1

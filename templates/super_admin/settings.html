@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}System Settings - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="settings"></i> System Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <!-- General Settings -->
+                        <h6 class="text-primary mb-3">General Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="system_name" class="form-label">System Name</label>
+                                <input type="text" class="form-control" id="system_name" name="system_name" 
+                                       value="{{ settings.get('system_name', 'Comolor POS') }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="license_amount" class="form-label">License Amount (KES)</label>
+                                <input type="number" class="form-control" id="license_amount" name="license_amount" 
+                                       value="{{ settings.get('license_amount', '3000') }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="default_tax_rate" class="form-label">Default Tax Rate (%)</label>
+                                <input type="number" step="0.01" class="form-control" id="default_tax_rate" name="default_tax_rate" 
+                                       value="{{ settings.get('default_tax_rate', '16') }}">
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- MPesa Configuration -->
+                        <h6 class="text-primary mb-3">MPesa API Configuration</h6>
+                        
+                        <div class="alert alert-info">
+                            <i data-feather="info"></i>
+                            <strong>Note:</strong> These settings configure the MPesa C2B API integration for payment processing.
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="mpesa_consumer_key" class="form-label">Consumer Key</label>
+                                <input type="text" class="form-control" id="mpesa_consumer_key" name="mpesa_consumer_key" 
+                                       value="{{ settings.get('mpesa_consumer_key', '') }}" placeholder="Enter consumer key">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="mpesa_consumer_secret" class="form-label">Consumer Secret</label>
+                                <input type="password" class="form-control" id="mpesa_consumer_secret" name="mpesa_consumer_secret" 
+                                       value="{{ settings.get('mpesa_consumer_secret', '') }}" placeholder="Enter consumer secret">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="mpesa_shortcode" class="form-label">Shortcode</label>
+                                <input type="text" class="form-control" id="mpesa_shortcode" name="mpesa_shortcode" 
+                                       value="{{ settings.get('mpesa_shortcode', '') }}" placeholder="Enter shortcode">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="mpesa_passkey" class="form-label">Passkey</label>
+                                <input type="password" class="form-control" id="mpesa_passkey" name="mpesa_passkey" 
+                                       value="{{ settings.get('mpesa_passkey', '') }}" placeholder="Enter passkey">
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <i data-feather="alert-triangle"></i>
+                            <strong>Security Notice:</strong> Make sure to use environment variables for sensitive MPesa credentials in production.
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- License Payment Configuration -->
+                        <h6 class="text-primary mb-3">License Payment Configuration</h6>
+                        
+                        <div class="alert alert-info">
+                            <i data-feather="info"></i>
+                            <strong>Configure License Payments:</strong> Choose where shops send license payments - either to your till number or phone number.
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Payment Method</label>
+                                <div class="d-flex gap-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="license_payment_type" id="payment_type_phone" 
+                                               value="phone" {{ 'checked' if settings.get('license_payment_type', 'phone') == 'phone' }}>
+                                        <label class="form-check-label" for="payment_type_phone">
+                                            <i data-feather="smartphone" class="me-2"></i>Phone Number (Personal MPesa)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="license_payment_type" id="payment_type_till" 
+                                               value="till" {{ 'checked' if settings.get('license_payment_type') == 'till' }}>
+                                        <label class="form-check-label" for="payment_type_till">
+                                            <i data-feather="credit-card" class="me-2"></i>Till Number (Business Account)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="license_payment_number" class="form-label">
+                                    <span id="payment_number_label">
+                                        {{ 'Phone Number' if settings.get('license_payment_type', 'phone') == 'phone' else 'Till Number' }}
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" id="license_payment_number" name="license_payment_number" 
+                                       value="{{ settings.get('license_payment_number', '') }}" 
+                                       placeholder="{{ '254712345678' if settings.get('license_payment_type', 'phone') == 'phone' else '123456' }}">
+                                <div class="form-text">
+                                    <span id="payment_number_help">
+                                        {{ 'Shops will send license payments to this phone number' if settings.get('license_payment_type', 'phone') == 'phone' else 'Shops will send license payments to this till number' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="license_payment_name" class="form-label">Account Name</label>
+                                <input type="text" class="form-control" id="license_payment_name" name="license_payment_name" 
+                                       value="{{ settings.get('license_payment_name', 'Super Admin') }}" 
+                                       placeholder="Your business name">
+                                <div class="form-text">Name displayed to shops for license payments</div>
+                            </div>
+                        </div>
+                        
+                        {% if settings.get('license_payment_number') %}
+                        <div class="alert alert-success">
+                            <i data-feather="check-circle"></i>
+                            <strong>Current License Payment Setup:</strong><br>
+                            Type: {{ 'Phone Number' if settings.get('license_payment_type', 'phone') == 'phone' else 'Till Number' }}<br>
+                            Number: {{ settings.get('license_payment_number') }}<br>
+                            Name: {{ settings.get('license_payment_name', 'Super Admin') }}
+                        </div>
+                        {% endif %}
+                        
+                        <hr class="my-4">
+                        
+                        <!-- System Information -->
+                        <h6 class="text-primary mb-3">System Information</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h5>Version</h5>
+                                        <p class="mb-0">v1.0.0</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h5>Environment</h5>
+                                        <p class="mb-0">Production</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h5>Database</h5>
+                                        <p class="mb-0">PostgreSQL</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('super_admin.dashboard') }}" class="btn btn-secondary">
+                                <i data-feather="arrow-left"></i> Back to Dashboard
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save"></i> Save Settings
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Handle payment type selection
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneRadio = document.getElementById('payment_type_phone');
+    const tillRadio = document.getElementById('payment_type_till');
+    const numberLabel = document.getElementById('payment_number_label');
+    const numberInput = document.getElementById('license_payment_number');
+    const numberHelp = document.getElementById('payment_number_help');
+    
+    function updatePaymentTypeUI() {
+        if (phoneRadio && phoneRadio.checked) {
+            numberLabel.textContent = 'Phone Number';
+            numberInput.placeholder = '254712345678';
+            numberHelp.textContent = 'Shops will send license payments to this phone number';
+        } else if (tillRadio && tillRadio.checked) {
+            numberLabel.textContent = 'Till Number';
+            numberInput.placeholder = '123456';
+            numberHelp.textContent = 'Shops will send license payments to this till number';
+        }
+    }
+    
+    if (phoneRadio) phoneRadio.addEventListener('change', updatePaymentTypeUI);
+    if (tillRadio) tillRadio.addEventListener('change', updatePaymentTypeUI);
+});
+</script>
+{% endblock %}

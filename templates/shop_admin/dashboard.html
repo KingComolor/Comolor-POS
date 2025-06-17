@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Shop Admin Dashboard - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                <i data-feather="home"></i> Shop Dashboard
+            </h1>
+            <p class="text-muted">Welcome back! Here's your shop overview.</p>
+        </div>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="dollar-sign" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Today's Sales</h5>
+                            <h2 class="mb-0">KES {{ "{:,.0f}".format(today_sales) }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="trending-up" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Monthly Sales</h5>
+                            <h2 class="mb-0">KES {{ "{:,.0f}".format(monthly_sales) }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="alert-triangle" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Low Stock</h5>
+                            <h2 class="mb-0">{{ low_stock_products|length }}</h2>
+                            <small>Products need restocking</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="shopping-bag" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Recent Sales</h5>
+                            <h2 class="mb-0">{{ recent_sales|length }}</h2>
+                            <small>In the last 24 hours</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Top Selling Products -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="trending-up"></i> Top Selling Products (This Month)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if top_products %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Qty Sold</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in top_products %}
+                                    <tr>
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ product.total_quantity }}</td>
+                                        <td>KES {{ "{:,.0f}".format(product.total_revenue) }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No sales data available for this month.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Low Stock Alert -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="alert-triangle"></i> Low Stock Alert
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if low_stock_products %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Current Stock</th>
+                                        <th>Threshold</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in low_stock_products %}
+                                    <tr>
+                                        <td>{{ product.name }}</td>
+                                        <td>
+                                            <span class="badge bg-danger">{{ product.stock_quantity }}</span>
+                                        </td>
+                                        <td>{{ product.low_stock_threshold }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="{{ url_for('shop_admin.products') }}" class="btn btn-sm btn-warning">
+                            <i data-feather="package"></i> Manage Products
+                        </a>
+                    {% else %}
+                        <div class="text-center py-3">
+                            <i data-feather="check-circle" class="text-success display-4"></i>
+                            <p class="text-muted mt-2">All products are well stocked!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <!-- Recent Sales -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="shopping-bag"></i> Recent Sales
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_sales %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Receipt #</th>
+                                        <th>Cashier</th>
+                                        <th>Amount</th>
+                                        <th>Payment</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sale in recent_sales %}
+                                    <tr>
+                                        <td><code>{{ sale.receipt_number }}</code></td>
+                                        <td>{{ sale.cashier_user.username }}</td>
+                                        <td>KES {{ "{:,.0f}".format(sale.total_amount) }}</td>
+                                        <td>
+                                            {% if sale.payment_method == 'mpesa' %}
+                                                <span class="badge bg-success">MPesa</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Cash</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ sale.created_at.strftime('%H:%M') }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="{{ url_for('shop_admin.sales') }}" class="btn btn-sm btn-primary">
+                            <i data-feather="eye"></i> View All Sales
+                        </a>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="shopping-bag" class="display-4 text-muted"></i>
+                            <p class="text-muted mt-2">No recent sales</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cashier Performance -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="users"></i> Today's Cashier Performance
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if cashier_performance %}
+                        {% for performance in cashier_performance %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <strong>{{ performance.username }}</strong><br>
+                                <small class="text-muted">{{ performance.sale_count }} sales</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-primary">KES {{ "{:,.0f}".format(performance.total_amount) }}</span>
+                            </div>
+                        </div>
+                        {% if not loop.last %}<hr class="my-2">{% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No sales today</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

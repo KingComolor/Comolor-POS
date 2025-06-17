@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="plus"></i> Add New Product
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label for="name" class="form-label">Product Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="category_id" class="form-label">Category</label>
+                                <select class="form-select" id="category_id" name="category_id">
+                                    <option value="">Select Category</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="price" class="form-label">Selling Price (KES) *</label>
+                                <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="cost_price" class="form-label">Cost Price (KES)</label>
+                                <input type="number" step="0.01" class="form-control" id="cost_price" name="cost_price">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="sku" class="form-label">SKU</label>
+                                <input type="text" class="form-control" id="sku" name="sku" placeholder="Product SKU">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="barcode" class="form-label">Barcode</label>
+                                <input type="text" class="form-control" id="barcode" name="barcode" placeholder="Scan or enter barcode">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="stock_quantity" class="form-label">Initial Stock</label>
+                                <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" value="0">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="low_stock_threshold" class="form-label">Low Stock Alert</label>
+                                <input type="number" class="form-control" id="low_stock_threshold" name="low_stock_threshold" value="10">
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i data-feather="info"></i>
+                            <strong>Barcode Scanner:</strong> Click in the barcode field and scan to automatically populate the barcode.
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('shop_admin.products') }}" class="btn btn-secondary">
+                                <i data-feather="arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save"></i> Add Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/barcode.js') }}"></script>
+<script>
+    // Initialize barcode scanner for the barcode field
+    document.addEventListener('DOMContentLoaded', function() {
+        initBarcodeScanner('barcode');
+    });
+</script>
+{% endblock %}

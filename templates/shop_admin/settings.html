@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Shop Settings - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="settings"></i> Shop Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <!-- Shop Information -->
+                        <h6 class="text-primary mb-3">Shop Information</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Shop Name</label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       value="{{ shop.name }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="owner_name" class="form-label">Owner Name</label>
+                                <input type="text" class="form-control" id="owner_name" name="owner_name" 
+                                       value="{{ shop.owner_name }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="{{ shop.email }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       value="{{ shop.phone }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="3">{{ shop.address }}</textarea>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- MPesa Payment Settings -->
+                        <h6 class="text-primary mb-3">MPesa Payment Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="till_number" class="form-label">Till Number</label>
+                                <input type="text" class="form-control" id="till_number" name="till_number" 
+                                       value="{{ shop.till_number or '' }}" placeholder="e.g., 123456">
+                                <div class="form-text">Customers will send payments to this till number</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check mt-4">
+                                    <input class="form-check-input" type="checkbox" id="auto_register_webhooks" name="auto_register_webhooks"
+                                           {{ 'checked' if shop.settings.get('auto_register_webhooks') }}>
+                                    <label class="form-check-label" for="auto_register_webhooks">
+                                        Auto-register webhook URLs
+                                    </label>
+                                </div>
+                                <div class="form-text">Automatically register payment notification URLs with MPesa</div>
+                            </div>
+                        </div>
+                        
+                        {% if shop.till_number %}
+                        <div class="alert alert-info">
+                            <i data-feather="info"></i>
+                            <strong>Current Till Number:</strong> {{ shop.till_number }}<br>
+                            <small>Customers can send payments to this number for instant processing</small>
+                        </div>
+                        {% endif %}
+                        
+                        <hr class="my-4">
+                        
+                        <!-- POS Settings -->
+                        <h6 class="text-primary mb-3">POS Settings</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tax_rate" class="form-label">Tax Rate (%)</label>
+                                <input type="number" step="0.01" class="form-control" id="tax_rate" name="tax_rate" 
+                                       value="{{ shop.settings.get('tax_rate', 16) }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="theme" class="form-label">Theme</label>
+                                <select class="form-select" id="theme" name="theme">
+                                    <option value="light" {{ 'selected' if shop.settings.get('theme', 'light') == 'light' }}>Light</option>
+                                    <option value="dark" {{ 'selected' if shop.settings.get('theme') == 'dark' }}>Dark</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enable_discounts" name="enable_discounts"
+                                           {{ 'checked' if shop.settings.get('enable_discounts') }}>
+                                    <label class="form-check-label" for="enable_discounts">
+                                        Enable Discounts
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="mpesa_confirmation" name="mpesa_confirmation"
+                                           {{ 'checked' if shop.settings.get('mpesa_confirmation', True) }}>
+                                    <label class="form-check-label" for="mpesa_confirmation">
+                                        MPesa Confirmation Popup
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Receipt Settings -->
+                        <h6 class="text-primary mb-3">Receipt Settings</h6>
+                        
+                        <div class="mb-3">
+                            <label for="receipt_header" class="form-label">Receipt Header</label>
+                            <textarea class="form-control" id="receipt_header" name="receipt_header" rows="2" 
+                                      placeholder="Custom header text for receipts">{{ shop.settings.get('receipt_header', '') }}</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="receipt_footer" class="form-label">Receipt Footer</label>
+                            <textarea class="form-control" id="receipt_footer" name="receipt_footer" rows="2">{{ shop.settings.get('receipt_footer', 'Thank you for shopping with us!') }}</textarea>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- License Information -->
+                        <h6 class="text-primary mb-3">License Information</h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6>Till Number</h6>
+                                        <p class="mb-0"><code>{{ shop.till_number }}</code></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6>License Status</h6>
+                                        {% if shop.is_license_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            <p class="mb-0 mt-2">Expires: {{ shop.license_expires.strftime('%Y-%m-%d') }}</p>
+                                        {% else %}
+                                            <span class="badge bg-danger">Expired</span>
+                                            <p class="mb-0 mt-2">Contact support for renewal</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('shop_admin.dashboard') }}" class="btn btn-secondary">
+                                <i data-feather="arrow-left"></i> Back to Dashboard
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="save"></i> Save Settings
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

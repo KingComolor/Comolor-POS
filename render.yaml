@@ -1,0 +1,36 @@
+databases:
+  - name: comolor-pos-db
+    databaseName: comolor_pos
+    user: comolor_admin
+    region: oregon
+    plan: free
+
+services:
+  - type: web
+    name: comolor-pos
+    runtime: python3
+    region: oregon
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install email-validator==2.2.0 flask==3.1.1 flask-login==0.6.3 flask-sqlalchemy==3.1.1 gunicorn==23.0.0 psycopg2-binary==2.9.10 reportlab==4.2.5 requests==2.32.3 sqlalchemy==2.0.36 werkzeug==3.1.3
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --max-requests 1000 --max-requests-jitter 100 main:app
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: comolor-pos-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: FLASK_ENV
+        value: production
+      - key: MPESA_ENVIRONMENT
+        value: sandbox
+    healthCheckPath: /
+    autoDeploy: true
+    disk:
+      name: comolor-uploads
+      mountPath: /tmp/uploads
+      sizeGB: 1

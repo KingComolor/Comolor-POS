@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Cashiers - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i data-feather="users"></i> Manage Cashiers
+                </h1>
+                <a href="{{ url_for('shop_admin.add_cashier') }}" class="btn btn-primary">
+                    <i data-feather="plus"></i> Add Cashier
+                </a>
+            </div>
+            
+            <!-- Cashiers Table -->
+            <div class="card">
+                <div class="card-body">
+                    {% if cashiers %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Cashier</th>
+                                        <th>Status</th>
+                                        <th>Last Login</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cashier in cashiers %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ cashier.username }}</strong><br>
+                                            <small class="text-muted">{{ cashier.email }}</small>
+                                        </td>
+                                        <td>
+                                            {% if cashier.user_active %}
+                                                <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if cashier.last_login %}
+                                                {{ cashier.last_login.strftime('%Y-%m-%d %H:%M') }}
+                                            {% else %}
+                                                <span class="text-muted">Never</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ cashier.created_at.strftime('%Y-%m-%d') }}</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ url_for('shop_admin.edit_cashier', cashier_id=cashier.id) }}" 
+                                                   class="btn btn-sm btn-outline-primary" title="Edit Cashier">
+                                                    <i data-feather="edit"></i>
+                                                </a>
+                                                <form method="POST" action="{{ url_for('shop_admin.toggle_cashier_status', cashier_id=cashier.id) }}" 
+                                                      style="display: inline;" 
+                                                      onsubmit="return confirm('Are you sure you want to change this cashier status?')">
+                                                    <button type="submit" class="btn btn-sm btn-outline-warning" 
+                                                            title="{% if cashier.user_active %}Deactivate{% else %}Activate{% endif %} Cashier">
+                                                        {% if cashier.user_active %}
+                                                            <i data-feather="pause"></i>
+                                                        {% else %}
+                                                            <i data-feather="play"></i>
+                                                        {% endif %}
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ url_for('shop_admin.delete_cashier', cashier_id=cashier.id) }}" 
+                                                      style="display: inline;"
+                                                      onsubmit="return confirm('Are you sure you want to delete this cashier? This action cannot be undone.')">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                            title="Delete Cashier">
+                                                        <i data-feather="trash-2"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="users" class="display-4 text-muted"></i>
+                            <h4 class="text-muted mt-3">No cashiers found</h4>
+                            <p class="text-muted">Add your first cashier to start taking sales.</p>
+                            <a href="{{ url_for('shop_admin.add_cashier') }}" class="btn btn-primary">
+                                <i data-feather="plus"></i> Add Cashier
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/standard-navigation.js') }}"></script>
+{% endblock %}

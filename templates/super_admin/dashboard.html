@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Super Admin Dashboard - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                <i data-feather="shield"></i> Super Admin Dashboard
+            </h1>
+            <p class="text-muted">System overview and management</p>
+        </div>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="store" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Total Shops</h5>
+                            <h2 class="mb-0">{{ total_shops }}</h2>
+                            <small>{{ active_shops }} active</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="users" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Total Users</h5>
+                            <h2 class="mb-0">{{ total_users }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="dollar-sign" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Monthly Revenue</h5>
+                            <h2 class="mb-0">KES {{ "{:,.0f}".format(monthly_revenue) }}</h2>
+                            <small>This month</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i data-feather="alert-triangle" class="feather-lg"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title">Expiring Soon</h5>
+                            <h2 class="mb-0">{{ expiring_licenses|length }}</h2>
+                            <small>Within 30 days</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Recent MPesa Transactions -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="credit-card"></i> Recent License Payments
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_transactions %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Amount</th>
+                                        <th>Phone</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for transaction in recent_transactions %}
+                                    <tr>
+                                        <td>{{ transaction.transaction_time.strftime('%m-%d %H:%M') }}</td>
+                                        <td>KES {{ "{:,.0f}".format(transaction.amount) }}</td>
+                                        <td>{{ transaction.msisdn }}</td>
+                                        <td>
+                                            {% if transaction.is_processed %}
+                                                <span class="badge bg-success">Processed</span>
+                                            {% else %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No recent transactions</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Expiring Licenses -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="calendar"></i> Expiring Licenses
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if expiring_licenses %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Shop</th>
+                                        <th>Expires</th>
+                                        <th>Days Left</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for shop in expiring_licenses %}
+                                    <tr>
+                                        <td>{{ shop.name }}</td>
+                                        <td>{{ shop.license_expires.strftime('%Y-%m-%d') }}</td>
+                                        <td>
+                                            {% set days_left = (shop.license_expires - moment()).days %}
+                                            {% if days_left <= 7 %}
+                                                <span class="badge bg-danger">{{ days_left }} days</span>
+                                            {% elif days_left <= 15 %}
+                                                <span class="badge bg-warning">{{ days_left }} days</span>
+                                            {% else %}
+                                                <span class="badge bg-info">{{ days_left }} days</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No licenses expiring soon</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Audit Logs -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <i data-feather="activity"></i> Recent System Activity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_logs %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>User</th>
+                                        <th>Action</th>
+                                        <th>Entity</th>
+                                        <th>IP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for log in recent_logs %}
+                                    <tr>
+                                        <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>{{ log.user.username if log.user else 'System' }}</td>
+                                        <td>{{ log.action }}</td>
+                                        <td>{{ log.entity_type }} #{{ log.entity_id if log.entity_id else '' }}</td>
+                                        <td>{{ log.ip_address }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No recent activity</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Moment.js for date calculations (using a simple implementation)
+    function moment() {
+        return new Date();
+    }
+    
+    // Auto-refresh dashboard every 30 seconds
+    setTimeout(function() {
+        location.reload();
+    }, 30000);
+</script>
+{% endblock %}

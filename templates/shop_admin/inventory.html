@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory Management - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i data-feather="package"></i> Inventory Management
+                </h1>
+                <div>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#stockInModal">
+                        <i data-feather="plus"></i> Stock In
+                    </button>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#stockAdjustmentModal">
+                        <i data-feather="edit"></i> Stock Adjustment
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Inventory Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i data-feather="package" class="feather-lg"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="card-title">Total Products</h5>
+                                    <h2 class="mb-0" id="totalProducts">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i data-feather="check-circle" class="feather-lg"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="card-title">In Stock</h5>
+                                    <h2 class="mb-0" id="inStockProducts">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i data-feather="alert-triangle" class="feather-lg"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="card-title">Low Stock</h5>
+                                    <h2 class="mb-0" id="lowStockProducts">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i data-feather="x-circle" class="feather-lg"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="card-title">Out of Stock</h5>
+                                    <h2 class="mb-0" id="outOfStockProducts">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inventory Table -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h5>Product Inventory</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="inventorySearch" 
+                                   placeholder="Search products...">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Current Stock</th>
+                                    <th>Low Stock Alert</th>
+                                    <th>Last Updated</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTableBody">
+                                <!-- Inventory items will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stock In Modal -->
+<div class="modal fade" id="stockInModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Stock In</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="stockInForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="stockInProduct" class="form-label">Product</label>
+                        <select class="form-select" id="stockInProduct" name="product_id" required>
+                            <option value="">Select Product</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stockInQuantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="stockInQuantity" name="quantity" required min="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="stockInReference" class="form-label">Reference</label>
+                        <input type="text" class="form-control" id="stockInReference" name="reference" 
+                               placeholder="Purchase order, supplier, etc.">
+                    </div>
+                    <div class="mb-3">
+                        <label for="stockInNotes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="stockInNotes" name="notes" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Stock Adjustment Modal -->
+<div class="modal fade" id="stockAdjustmentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Stock Adjustment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="stockAdjustmentForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="adjustmentProduct" class="form-label">Product</label>
+                        <select class="form-select" id="adjustmentProduct" name="product_id" required>
+                            <option value="">Select Product</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="currentStock" class="form-label">Current Stock</label>
+                        <input type="number" class="form-control" id="currentStock" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newStock" class="form-label">New Stock Quantity</label>
+                        <input type="number" class="form-control" id="newStock" name="new_quantity" required min="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="adjustmentReason" class="form-label">Reason</label>
+                        <select class="form-select" id="adjustmentReason" name="reason" required>
+                            <option value="">Select Reason</option>
+                            <option value="damaged">Damaged Stock</option>
+                            <option value="expired">Expired Stock</option>
+                            <option value="theft">Theft/Loss</option>
+                            <option value="count_error">Stock Count Error</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adjustmentNotes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="adjustmentNotes" name="notes" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">Adjust Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Load inventory data
+    function loadInventory() {
+        // This would typically fetch from an API endpoint
+        // For now, showing the structure
+        console.log('Loading inventory data...');
+    }
+    
+    // Initialize inventory management
+    document.addEventListener('DOMContentLoaded', function() {
+        loadInventory();
+    });
+</script>
+{% endblock %}

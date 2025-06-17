@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt #{{ sale.receipt_number }}</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none !important; }
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .shop-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .sale-info {
+            margin-bottom: 10px;
+        }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        
+        .items-table th,
+        .items-table td {
+            padding: 2px;
+            text-align: left;
+        }
+        
+        .items-table th {
+            border-bottom: 1px solid #000;
+        }
+        
+        .qty, .price, .total {
+            text-align: right;
+        }
+        
+        .totals {
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+        }
+        
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+        }
+        
+        .grand-total {
+            font-weight: bold;
+            font-size: 14px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="shop-name">{{ shop.name }}</div>
+        <div>{{ shop.address }}</div>
+        <div>Phone: {{ shop.phone }}</div>
+        <div>Email: {{ shop.email }}</div>
+        {% if shop.settings.get('receipt_header') %}
+            <div style="margin-top: 10px;">{{ shop.settings.get('receipt_header') }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="sale-info">
+        <div style="display: flex; justify-content: space-between;">
+            <span>Receipt #: {{ sale.receipt_number }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <span>Date: {{ sale.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <span>Cashier: {{ sale.cashier_user.username }}</span>
+        </div>
+        {% if sale.customer_name %}
+        <div style="display: flex; justify-content: space-between;">
+            <span>Customer: {{ sale.customer_name }}</span>
+        </div>
+        {% endif %}
+        {% if sale.mpesa_receipt %}
+        <div style="display: flex; justify-content: space-between;">
+            <span>MPesa: {{ sale.mpesa_receipt }}</span>
+        </div>
+        {% endif %}
+    </div>
+    
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th class="qty">Qty</th>
+                <th class="price">Price</th>
+                <th class="total">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in sale.items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td class="qty">{{ item.quantity }}</td>
+                <td class="price">{{ "{:,.0f}".format(item.unit_price) }}</td>
+                <td class="total">{{ "{:,.0f}".format(item.line_total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="totals">
+        <div class="total-line">
+            <span>Subtotal:</span>
+            <span>KES {{ "{:,.2f}".format(sale.subtotal) }}</span>
+        </div>
+        
+        {% if sale.discount_amount > 0 %}
+        <div class="total-line">
+            <span>Discount:</span>
+            <span>-KES {{ "{:,.2f}".format(sale.discount_amount) }}</span>
+        </div>
+        {% endif %}
+        
+        <div class="total-line">
+            <span>Tax:</span>
+            <span>KES {{ "{:,.2f}".format(sale.tax_amount) }}</span>
+        </div>
+        
+        <div class="total-line grand-total">
+            <span>TOTAL:</span>
+            <span>KES {{ "{:,.2f}".format(sale.total_amount) }}</span>
+        </div>
+        
+        <div class="total-line" style="margin-top: 10px;">
+            <span>Payment:</span>
+            <span>{{ sale.payment_method.upper() }}</span>
+        </div>
+    </div>
+    
+    <div class="footer">
+        {% if shop.settings.get('receipt_footer') %}
+            <div>{{ shop.settings.get('receipt_footer') }}</div>
+        {% endif %}
+        <div style="margin-top: 5px;">
+            Powered by Comolor POS
+        </div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+                window.close();
+            };
+        };
+    </script>
+</body>
+</html>

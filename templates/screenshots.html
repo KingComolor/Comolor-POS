@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshots - Comolor POS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+        }
+        .screenshot-card {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 30px;
+        }
+        .screenshot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .feature-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .screenshot-mockup {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .mockup-content {
+            text-align: center;
+            color: #6c757d;
+        }
+        .window-controls {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            display: flex;
+            gap: 5px;
+        }
+        .window-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .control-close { background: #ff5f56; }
+        .control-minimize { background: #ffbd2e; }
+        .control-maximize { background: #27ca3f; }
+        .section-divider {
+            border-top: 3px solid;
+            border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+            margin: 60px 0 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">See Comolor POS in Action</h1>
+            <p class="lead mb-4">Explore the powerful features that make running your retail business effortless</p>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="card bg-transparent border-light text-white">
+                        <div class="card-body">
+                            <i data-feather="users" class="mb-3" style="width: 48px; height: 48px;"></i>
+                            <h4>Shop Admin Features</h4>
+                            <p>Complete business management tools</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card bg-transparent border-light text-white">
+                        <div class="card-body">
+                            <i data-feather="shopping-cart" class="mb-3" style="width: 48px; height: 48px;"></i>
+                            <h4>Cashier Features</h4>
+                            <p>Fast and intuitive point of sale</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Admin Features -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">Shop Admin Dashboard</h2>
+                <p class="lead text-muted">Complete control over your business operations</p>
+            </div>
+
+            <div class="row">
+                <!-- Dashboard Overview -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="bar-chart-2" class="me-2"></i>Business Dashboard</h5>
+                                <span class="feature-badge">Overview</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="row text-start">
+                                        <div class="col-6 mb-3">
+                                            <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                                <h6 class="text-primary">Today's Sales</h6>
+                                                <h4 class="text-primary">KSh 45,250</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="bg-success bg-opacity-10 p-3 rounded">
+                                                <h6 class="text-success">Products Sold</h6>
+                                                <h4 class="text-success">127 items</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <small class="text-muted">📊 Sales Analytics • 📋 Inventory Status • 👥 Staff Performance</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Real-time business metrics, sales analytics, and key performance indicators at a glance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Management -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="package" class="me-2"></i>Product Management</h5>
+                                <span class="feature-badge">Inventory</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="text-start">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6>Products Catalog</h6>
+                                            <button class="btn btn-primary btn-sm">+ Add Product</button>
+                                        </div>
+                                        <div class="border rounded p-2 mb-2">
+                                            <div class="d-flex justify-content-between">
+                                                <span><strong>Samsung Galaxy A54</strong></span>
+                                                <span class="text-success">KSh 35,000</span>
+                                            </div>
+                                            <small class="text-muted">Stock: 12 units • Category: Electronics</small>
+                                        </div>
+                                        <div class="border rounded p-2">
+                                            <div class="d-flex justify-content-between">
+                                                <span><strong>Nike Air Max</strong></span>
+                                                <span class="text-danger">Low Stock</span>
+                                            </div>
+                                            <small class="text-muted">Stock: 3 units • Category: Footwear</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Add, edit, and organize your product catalog with categories, pricing, and stock management.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Reports -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="trending-up" class="me-2"></i>Sales Reports</h5>
+                                <span class="feature-badge">Analytics</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="text-start">
+                                        <h6 class="mb-3">Sales Performance</h6>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>This Week</span>
+                                                <span>KSh 234,500</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" style="width: 78%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>This Month</span>
+                                                <span>KSh 892,100</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" style="width: 65%"></div>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">📈 Growth Trends • 💰 Revenue Analysis • 📊 Product Performance</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Detailed sales analytics, revenue tracking, and business performance insights.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staff Management -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="users" class="me-2"></i>Staff Management</h5>
+                                <span class="feature-badge">Team</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="text-start">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6>Cashier Team</h6>
+                                            <button class="btn btn-outline-primary btn-sm">+ Add Cashier</button>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2 p-2 border rounded">
+                                            <div class="bg-success rounded-circle me-3" style="width: 8px; height: 8px;"></div>
+                                            <div>
+                                                <strong>Mary Wanjiku</strong><br>
+                                                <small class="text-muted">Active • Sales: KSh 156,000</small>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center p-2 border rounded">
+                                            <div class="bg-secondary rounded-circle me-3" style="width: 8px; height: 8px;"></div>
+                                            <div>
+                                                <strong>John Kiprotich</strong><br>
+                                                <small class="text-muted">Offline • Sales: KSh 89,500</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Manage cashier accounts, track performance, and control access permissions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider -->
+    <div class="section-divider"></div>
+
+    <!-- Cashier Features -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">Cashier Point of Sale</h2>
+                <p class="lead text-muted">Fast, intuitive, and reliable checkout experience</p>
+            </div>
+
+            <div class="row">
+                <!-- POS Interface -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="shopping-cart" class="me-2"></i>Point of Sale Interface</h5>
+                                <span class="feature-badge">POS</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup" style="min-height: 300px;">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content w-100">
+                                    <div class="row text-start">
+                                        <div class="col-8">
+                                            <h6 class="mb-3">Product Search</h6>
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" placeholder="Search products or scan barcode">
+                                                <button class="btn btn-outline-primary">🔍</button>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 mb-2">
+                                                    <div class="card border-primary">
+                                                        <div class="card-body p-2 text-center">
+                                                            <small><strong>iPhone 15</strong></small><br>
+                                                            <small class="text-primary">KSh 89,000</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <div class="card">
+                                                        <div class="card-body p-2 text-center">
+                                                            <small><strong>Airpods Pro</strong></small><br>
+                                                            <small class="text-muted">KSh 25,000</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6 class="mb-3">Shopping Cart</h6>
+                                            <div class="border rounded p-2 mb-2">
+                                                <div class="d-flex justify-content-between">
+                                                    <small><strong>Samsung A54</strong></small>
+                                                    <small>×2</small>
+                                                </div>
+                                                <small class="text-muted">KSh 70,000</small>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between">
+                                                <strong>Total:</strong>
+                                                <strong class="text-primary">KSh 70,000</strong>
+                                            </div>
+                                            <button class="btn btn-success btn-sm w-100 mt-2">Checkout</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Intuitive POS interface with barcode scanning, product search, and real-time cart management.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Processing -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="credit-card" class="me-2"></i>Payment Options</h5>
+                                <span class="feature-badge">Payment</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="text-start">
+                                        <h6 class="mb-3">Payment Method</h6>
+                                        <div class="mb-3">
+                                            <button class="btn btn-outline-success w-100 mb-2">
+                                                💰 Cash Payment
+                                            </button>
+                                            <button class="btn btn-success w-100">
+                                                📱 M-Pesa Payment
+                                            </button>
+                                        </div>
+                                        <div class="alert alert-info p-2">
+                                            <small>
+                                                <strong>M-Pesa Instructions:</strong><br>
+                                                Send KSh 70,000 to Till: 123456
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Multiple payment options including cash and M-Pesa integration with real-time verification.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receipt Generation -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="printer" class="me-2"></i>Receipt Generation</h5>
+                                <span class="feature-badge">Printing</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="text-start">
+                                        <div class="bg-white border p-3 rounded" style="font-family: monospace; font-size: 0.8rem;">
+                                            <div class="text-center mb-2">
+                                                <strong>COMOLOR ELECTRONICS</strong><br>
+                                                <small>Tom Mboya Street, Nairobi</small><br>
+                                                <small>Tel: +254 797 237 383</small>
+                                            </div>
+                                            <hr style="border-top: 1px dashed #000;">
+                                            <div>Receipt: #R001234</div>
+                                            <div>Date: 17/06/2025 14:30</div>
+                                            <div>Cashier: Mary W.</div>
+                                            <hr style="border-top: 1px dashed #000;">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Samsung A54 x2</span>
+                                                <span>70,000</span>
+                                            </div>
+                                            <hr style="border-top: 1px dashed #000;">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>TOTAL</strong>
+                                                <strong>KSh 70,000</strong>
+                                            </div>
+                                            <div class="text-center mt-2">
+                                                <small>Payment: M-Pesa</small><br>
+                                                <small>Thank you for shopping!</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Professional receipt generation with customizable branding and automatic printing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barcode Scanning -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card screenshot-card">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i data-feather="maximize" class="me-2"></i>Barcode Scanner</h5>
+                                <span class="feature-badge">Hardware</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="screenshot-mockup">
+                                <div class="window-controls">
+                                    <div class="window-control control-close"></div>
+                                    <div class="window-control control-minimize"></div>
+                                    <div class="window-control control-maximize"></div>
+                                </div>
+                                <div class="mockup-content">
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <div class="bg-primary bg-opacity-10 p-4 rounded">
+                                                <i data-feather="maximize" style="width: 48px; height: 48px; color: #667eea;"></i>
+                                            </div>
+                                        </div>
+                                        <h6>Barcode Scanner Ready</h6>
+                                        <p class="text-muted small">Scan product barcode or<br>type manually</p>
+                                        <div class="alert alert-success p-2">
+                                            <small>
+                                                <strong>Last Scan:</strong><br>
+                                                Samsung Galaxy A54<br>
+                                                Added to cart ✓
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-muted">Hardware barcode scanner integration with instant product recognition and cart addition.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container text-center text-white">
+            <h2 class="fw-bold mb-4">Ready to Experience Comolor POS?</h2>
+            <p class="lead mb-4">See how these powerful features can transform your retail business</p>
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg w-100">
+                        <i data-feather="user-plus" class="me-2"></i>Start Free Trial
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg w-100">
+                        <i data-feather="log-in" class="me-2"></i>Login to Demo
+                    </a>
+                </div>
+            </div>
+            <p class="mt-4 text-white-50">
+                <small>Questions? Contact us at comolor07@gmail.com or +254 797 237 383</small>
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Comolor POS. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+databases:
+  - name: comolor-pos-db
+    databaseName: comolor_pos
+    user: comolor_admin
+    region: oregon
+
+services:
+  - type: web
+    name: comolor-pos
+    runtime: python3
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT main:app
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: comolor-pos-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: MPESA_ENVIRONMENT
+        value: production
+    healthCheckPath: /
+    disk:
+      name: comolor-pos-disk
+      mountPath: /opt/render/project/uploads
+      sizeGB: 1

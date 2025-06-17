@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}License Management - Comolor POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i data-feather="credit-card"></i> License Management
+                </h1>
+            </div>
+            
+            <!-- Pending MPesa Payments -->
+            {% if pending_mpesa %}
+            <div class="card mb-4 border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i data-feather="clock"></i> Pending License Payments
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Amount</th>
+                                    <th>Phone</th>
+                                    <th>Customer</th>
+                                    <th>Till Number</th>
+                                    <th>Time</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in pending_mpesa %}
+                                <tr>
+                                    <td><code>{{ transaction.transaction_id }}</code></td>
+                                    <td>KES {{ "{:,.0f}".format(transaction.amount) }}</td>
+                                    <td>{{ transaction.msisdn }}</td>
+                                    <td>
+                                        {{ transaction.first_name or '' }} 
+                                        {{ transaction.middle_name or '' }} 
+                                        {{ transaction.last_name or '' }}
+                                    </td>
+                                    <td><code>{{ transaction.bill_ref_number }}</code></td>
+                                    <td>{{ transaction.transaction_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('super_admin.approve_mpesa_license', transaction_id=transaction.id) }}" 
+                                           class="btn btn-sm btn-success"
+                                           onclick="return window.confirm('Approve this license payment?')">
+                                            <i data-feather="check"></i> Approve
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Filter -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="">All Statuses</option>
+                                <option value="pending" {{ 'selected' if status_filter == 'pending' }}>Pending</option>
+                                <option value="approved" {{ 'selected' if status_filter == 'approved' }}>Approved</option>
+                                <option value="rejected" {{ 'selected' if status_filter == 'rejected' }}>Rejected</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i data-feather="filter"></i> Filter
+                                </button>
+                                <a href="{{ url_for('super_admin.licenses') }}" class="btn btn-secondary">Clear</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- License Payments Table -->
+            <div class="card">
+                <div class="card-body">
+                    {% if payments.items %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Shop</th>
+                                        <th>Amount</th>
+                                        <th>MPesa Transaction</th>
+                                        <th>Payment Date</th>
+                                        <th>License Period</th>
+                                        <th>Status</th>
+                                        <th>Approved By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in payments.items %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ payment.shop.name }}</strong><br>
+                                            <small class="text-muted">{{ payment.shop.owner_name }}</small>
+                                        </td>
+                                        <td>KES {{ "{:,.0f}".format(payment.amount) }}</td>
+                                        <td>
+                                            {% if payment.mpesa_transaction_id %}
+                                                <code>{{ payment.mpesa_transaction_id }}</code>
+                                            {% else %}
+                                                <span class="text-muted">Manual</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ payment.payment_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            {{ payment.license_start.strftime('%Y-%m-%d') }} to<br>
+                                            {{ payment.license_end.strftime('%Y-%m-%d') }}
+                                        </td>
+                                        <td>
+                                            {% if payment.status == 'approved' %}
+                                                <span class="badge bg-success">Approved</span>
+                                            {% elif payment.status == 'rejected' %}
+                                                <span class="badge bg-danger">Rejected</span>
+                                            {% else %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if payment.approved_by_user %}
+                                                {{ payment.approved_by_user.username }}
+                                            {% else %}
+                                                <span class="text-muted">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        {% if payments.pages > 1 %}
+                        <nav aria-label="Payments pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if payments.has_prev %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('super_admin.licenses', page=payments.prev_num, status=status_filter) }}">Previous</a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for page_num in payments.iter_pages() %}
+                                    {% if page_num %}
+                                        {% if page_num != payments.page %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('super_admin.licenses', page=page_num, status=status_filter) }}">{{ page_num }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ page_num }}</span>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if payments.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('super_admin.licenses', page=payments.next_num, status=status_filter) }}">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="credit-card" class="display-4 text-muted"></i>
+                            <h4 class="text-muted mt-3">No license payments found</h4>
+                            <p class="text-muted">No payments match your filter criteria.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
