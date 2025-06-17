@@ -2,7 +2,7 @@ modules = ["web", "python-3.11", "nodejs-20", "bash"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["freetype", "glibcLocales", "openssl", "postgresql"]
+packages = ["freetype", "glibcLocales", "openssl", "postgresql", "python311Packages.flask", "python311Packages.flask-sqlalchemy", "python311Packages.flask-login", "python311Packages.psycopg2", "python311Packages.sqlalchemy", "python311Packages.werkzeug", "python311Packages.gunicorn", "python311Packages.reportlab", "python311Packages.requests"]
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -26,7 +26,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd /home/runner/workspace && PYTHONPATH=/home/runner/workspace poetry run python main.py"
+args = "cd /home/runner/workspace && PYTHONPATH=/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/site-packages:/home/runner/workspace python3.11 main.py"
 waitForPort = 5000
 
 [[ports]]
